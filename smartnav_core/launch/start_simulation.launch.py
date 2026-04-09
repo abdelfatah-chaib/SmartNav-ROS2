@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import os
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, TimerAction
 from launch.substitutions import Command, PathJoinSubstitution
@@ -11,6 +14,11 @@ def generate_launch_description():
     
     urdf_xacro = PathJoinSubstitution([pkg_description, 'urdf', 'smartnav.xacro'])
     world_file = PathJoinSubstitution([pkg_gazebo, 'worlds', 'smartnav.world'])
+    rviz_config_file = os.path.join(
+        get_package_share_directory('smartnav_description'),
+        'rviz',
+        'smartnav.rviz'
+    )
     robot_description = Command(['xacro ', urdf_xacro])
     
     # 1. Lancer Gazebo
@@ -77,6 +85,7 @@ def generate_launch_description():
     rviz2 = Node(
         package='rviz2',
         executable='rviz2',
+        arguments=['-d', rviz_config_file],
         output='screen'
     )
     
