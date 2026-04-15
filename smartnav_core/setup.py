@@ -25,6 +25,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'rviz_alert_node = smartnav_core.rviz_alert_node:main',
         ],
     },
 )
