@@ -1,7 +1,5 @@
 # SmartNav-ROS2
 
-Digital Twin and Simulation for the SmartNav Autonomous Cane
-
 ## Pourquoi le robot ne bougeait pas avant
 
 Le problème ne venait pas du clavier `teleop_twist_keyboard` lui-même.
@@ -93,6 +91,89 @@ Pour vérifier que les commandes sont bien publiées :
 ```bash
 ros2 topic echo /cmd_vel
 ```
+
+## Tâche avancée : patrouille automatique
+
+Une tâche avancée a été ajoutée dans `smartnav_core` sous la forme d'un nœud
+ROS 2 nommé `patrol`.
+
+Son rôle est de :
+
+- publier automatiquement des commandes de vitesse sur `/cmd_vel`
+- faire avancer le robot en ligne droite pendant quelques secondes
+- arrêter le robot automatiquement à la fin
+
+Ce script permet de tester rapidement le comportement du robot sans utiliser le
+clavier.
+
+### Comment utiliser la patrouille
+
+Après avoir lancé la simulation et sourcé le workspace, ouvrir un nouveau
+terminal et exécuter :
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source /home/zineb/SmartNav-ROS2/install/setup.bash
+ros2 run smartnav_core patrol
+```
+
+### Comportement par défaut
+
+Par défaut, le script :
+
+- avance à `0.35 m/s`
+- ne tourne pas (`angular_speed = 0.0`)
+- s'exécute pendant `8 secondes`
+- s'arrête ensuite automatiquement
+
+### Utilisation avec paramètres
+
+On peut modifier le comportement avec des paramètres ROS 2.
+
+Exemple plus lent :
+
+```bash
+ros2 run smartnav_core patrol --ros-args -p linear_speed:=0.2 -p duration_sec:=5.0
+```
+
+Exemple avec une légère rotation :
+
+```bash
+ros2 run smartnav_core patrol --ros-args -p linear_speed:=0.25 -p angular_speed:=0.15 -p duration_sec:=6.0
+```
+
+### Comment tester la tâche avancée
+
+1. Lancer la simulation.
+2. Vérifier que le robot apparaît correctement dans Gazebo.
+3. Lancer :
+
+```bash
+ros2 run smartnav_core patrol
+```
+
+4. Observer que le robot avance tout seul.
+5. Vérifier qu'il s'arrête automatiquement après la durée prévue.
+
+### Vérification du topic
+
+Pour confirmer que la patrouille envoie bien des commandes :
+
+```bash
+ros2 topic echo /cmd_vel
+```
+
+ou côté Gazebo :
+
+```bash
+gz topic -e -t /cmd_vel
+```
+
+### Remarque
+
+La patrouille automatique fait avancer le robot tout droit. Si un piéton ou un
+obstacle dynamique est présent dans le monde Gazebo utilisé, cela permet de
+tester la réactivité du système en conditions quasi automatiques.
 
 Si le robot ne bouge plus dans le futur, vérifier en priorité :
 

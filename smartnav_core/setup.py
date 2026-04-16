@@ -25,6 +25,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'patrol = smartnav_core.patrol:main',
         ],
     },
 )
