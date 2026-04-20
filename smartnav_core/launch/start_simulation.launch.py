@@ -6,6 +6,7 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess, TimerAction
 from launch.substitutions import Command, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
@@ -32,7 +33,7 @@ def generate_launch_description():
         package='robot_state_publisher',
         executable='robot_state_publisher',
         parameters=[{
-            'robot_description': robot_description,
+            'robot_description': ParameterValue(robot_description, value_type=str),
             'use_sim_time': True
         }],
         output='screen'
@@ -61,7 +62,7 @@ def generate_launch_description():
     ros_gz_bridge_lidar = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan'],
+        arguments=['/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan'],
         output='screen'
     )
     
@@ -69,7 +70,7 @@ def generate_launch_description():
     ros_gz_bridge_cmd_vel = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist'],
+        arguments=['/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist'],
         output='screen'
     )
     
@@ -77,7 +78,7 @@ def generate_launch_description():
     ros_gz_bridge_clock = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock'],
+        arguments=['/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock'],
         output='screen'
     )
     

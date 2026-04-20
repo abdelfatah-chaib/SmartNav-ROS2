@@ -108,18 +108,12 @@
       </ray>
         <ros2>
           <namespace>/</namespace>
-          <topic_name>/scan</topic_name>
+          <topic_name>scan</topic_name>
         </ros2>
     </sensor>
   </gazebo>
 
   <gazebo reference="base_link">
-    <plugin filename="libgz-sim-planar-move-system.so" name="gz::sim::systems::PlanarMove">
-      <ros2>
-        <namespace>/</namespace>
-        <topic_name>/cmd_vel</topic_name>
-      </ros2>
-    </plugin>
     <visual>
       <geometry>
         <cylinder radius="0.25" length="1.6"/>
@@ -130,6 +124,15 @@
         <diffuse>0.1 0.1 0.8 1.0</diffuse>
       </material>
     </visual>
+  </gazebo>
+
+  <!-- Holonomic-style motion: apply cmd_vel to base_link (plugin ships with gz-sim8 on Jazzy) -->
+  <gazebo>
+    <plugin filename="gz-sim-velocity-control-system"
+            name="gz::sim::systems::VelocityControl">
+      <topic>cmd_vel</topic>
+      <link_name>base_link</link_name>
+    </plugin>
   </gazebo>
 
   <gazebo reference="cane_link">

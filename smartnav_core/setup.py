@@ -27,6 +27,7 @@ setup(
         'console_scripts': [
             'obstacle_detector = smartnav_core.obstacle_detector:main',
             'rviz_alert_node = smartnav_core.rviz_alert_node:main',
+            'patrol = smartnav_core.patrol:main',
         ],
     },
 )
