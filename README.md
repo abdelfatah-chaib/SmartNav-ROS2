@@ -28,7 +28,7 @@ The workspace is structured around three main ROS 2 packages:
 ```bash
 mkdir -p ~/smartnav_ws/src
 cd ~/smartnav_ws/src
-git clone <YOUR_GIT_REPOSITORY_URL> .
+git clone <https://github.com/abdelfatah-chaib/SmartNav-ROS2> .
 Update and install system dependencies via rosdep:
 
 Bash
