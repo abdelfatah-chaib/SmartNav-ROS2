@@ -25,47 +25,65 @@ The workspace is structured around three main ROS 2 packages:
 ## Installation
 
 1. Initialize the workspace and clone the repository:
+
 ```bash
 mkdir -p ~/smartnav_ws/src
 cd ~/smartnav_ws/src
 git clone <https://github.com/abdelfatah-chaib/SmartNav-ROS2> .
-Update and install system dependencies via rosdep:
+```
 
-Bash
+2. Update and install system dependencies via rosdep:
+
+```bash
 cd ~/smartnav_ws
 sudo rosdep init
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
-Build the project:
+```
 
-Bash
+3. Build the project:
+
+```bash
 cd ~/smartnav_ws
 colcon build --symlink-install
-Source the environment:
+```
 
-Bash
+4. Source the environment:
+
+```bash
 source install/setup.bash
-Usage and Execution
-Running the full system requires launching the simulation environment and the processing nodes in parallel. Open separate terminals and ensure you run source install/setup.bash in each of them before executing the commands.
+```
+
+## Usage and Execution
+
+Running the full system requires launching the simulation environment and the processing nodes in parallel. Open separate terminals and run `source install/setup.bash` in each terminal before executing the commands.
 
 Terminal 1: Launch the physical simulation (Gazebo) and visualization interface (RViz2)
 
-Bash
+```bash
 ros2 launch smartnav_core start_simulation.launch.py
+```
+
 Terminal 2: Activate the perception module (LiDAR data analysis)
 
-Bash
+```bash
 ros2 run smartnav_core obstacle_detector
-Terminal 3: Activate the mobility scenarios (Movement and testing)
+```
 
-Bash
+Terminal 3: Activate the mobility scenarios (movement and testing)
+
+```bash
 ros2 run smartnav_core patrol
-Repository Structure
+```
+
+## Repository Structure
+
 The source code follows the standard architecture of a ROS 2 workspace:
 
-Plaintext
+```text
 src/
 ├── smartnav_core/          # Perception and mobility nodes (Python)
-├── smartnav_description/   # 3D Models (URDF/XACRO) and RViz configurations
+├── smartnav_description/   # 3D models (URDF/XACRO) and RViz configurations
 ├── smartnav_gazebo/        # World files (.world) and Gazebo launch files
 └── README.md               # Main documentation
+```
