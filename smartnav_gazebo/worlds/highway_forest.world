@@ -1,0 +1,578 @@
+<?xml version="1.0" ?>
+<!--
+  SmartNav - World: Highway + Forest
+  ====================================
+  Environment for testing the smart cane for visually impaired persons.
+
+  Layout (bird's-eye view, Y axis = north):
+    y > 10  : Forest zone   - trees, rocks, branches at various heights
+    y 3..10 : Transition     - sidewalk, lamp posts, bench, sign, hedge
+    y -3..3 : Pedestrian     - the blind user walks here (robot spawn)
+    y < -3  : Highway zone   - 2 lanes each direction, moving cars
+
+  Dynamic obstacles:
+    car_red    : x = -30 -> +30, lane y = +1.8  (goes EAST, W to E)
+    car_blue   : x = +30 -> -30, lane y = -1.8  (goes WEST, E to W)
+    car_white  : x = -30 -> +30, lane y = +5.5  (second lane, EAST)
+
+  Static obstacles on path:
+    - bench at (5, 2, 0)
+    - lamp post at (-4, 2, 0)
+    - bollard at (10, 1, 0)
+    - low branch at (3, 7, 1.4)  [head-height - dangerous!]
+    - rock at (-8, 8, 0)
+-->
+<sdf version="1.9">
+  <world name="smartnav_world">
+
+    <!-- ===================== WORLD PLUGINS ===================== -->
+    <plugin name="gz::sim::systems::Physics"          filename="gz-sim-physics-system"/>
+    <plugin name="gz::sim::systems::UserCommands"     filename="gz-sim-user-commands-system"/>
+    <plugin name="gz::sim::systems::SceneBroadcaster" filename="gz-sim-scene-broadcaster-system"/>
+    <plugin name="gz::sim::systems::Sensors"          filename="gz-sim-sensors-system">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!-- ===================== SCENE ===================== -->
+    <scene>
+      <ambient>0.85 0.88 0.90 1</ambient>
+      <background>0.53 0.78 0.92 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <light name="sun" type="directional">
+      <pose>0 0 100 0 0 0</pose>
+      <diffuse>1 1 0.95 1</diffuse>
+      <specular>0.4 0.4 0.35 1</specular>
+      <direction>-0.5 -0.3 -0.8</direction>
+      <cast_shadows>true</cast_shadows>
+    </light>
+
+    <!-- ===================== GROUND ===================== -->
+
+    <!-- Main ground (grass, full area) -->
+    <model name="ground_main">
+      <static>true</static>
+      <link name="link">
+        <collision name="col">
+          <geometry><plane><normal>0 0 1</normal><size>200 200</size></plane></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><plane><normal>0 0 1</normal><size>200 200</size></plane></geometry>
+          <material>
+            <ambient>0.18 0.42 0.12 1</ambient>
+            <diffuse>0.20 0.48 0.14 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ===================== PEDESTRIAN PATH (y: -3 to 3) ===================== -->
+
+    <!-- Central concrete path surface -->
+    <model name="path_surface">
+      <static>true</static>
+      <pose>0 0 0.01 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>80 6 0.02</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>80 6 0.02</size></box></geometry>
+          <material>
+            <ambient>0.74 0.72 0.68 1</ambient>
+            <diffuse>0.78 0.76 0.72 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Curb south (separates path from highway) -->
+    <model name="curb_south">
+      <static>true</static>
+      <pose>0 -3 0.06 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>80 0.2 0.12</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>80 0.2 0.12</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ===================== HIGHWAY (y: -20 to -3) ===================== -->
+
+    <!-- Highway surface -->
+    <model name="highway_surface">
+      <static>true</static>
+      <pose>0 -12 0.005 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>80 18 0.01</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>80 18 0.01</size></box></geometry>
+          <material>
+            <ambient>0.20 0.20 0.20 1</ambient>
+            <diffuse>0.25 0.25 0.25 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Central median barrier (between lanes y=0 and y=-3) -->
+    <model name="median_barrier">
+      <static>true</static>
+      <pose>0 -3.5 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>80 0.3 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>80 0.3 0.5</size></box></geometry>
+          <material>
+            <ambient>0.95 0.80 0.15 1</ambient>
+            <diffuse>0.98 0.85 0.18 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Guard rail south -->
+    <model name="guardrail_south">
+      <static>true</static>
+      <pose>0 -20 0.35 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>80 0.15 0.7</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>80 0.15 0.7</size></box></geometry>
+          <material>
+            <ambient>0.7 0.7 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.80 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Lane markings (dashed center lines) East lanes -->
+    <model name="lane_mark_e1"><static>true</static><pose>-28 -1.8 0.02 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>3 0.12 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="lane_mark_e2"><static>true</static><pose>-20 -1.8 0.02 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>3 0.12 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="lane_mark_e3"><static>true</static><pose>-12 -1.8 0.02 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>3 0.12 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="lane_mark_e4"><static>true</static><pose>-4  -1.8 0.02 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>3 0.12 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="lane_mark_e5"><static>true</static><pose>4   -1.8 0.02 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>3 0.12 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="lane_mark_e6"><static>true</static><pose>12  -1.8 0.02 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>3 0.12 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="lane_mark_e7"><static>true</static><pose>20  -1.8 0.02 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>3 0.12 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="lane_mark_e8"><static>true</static><pose>28  -1.8 0.02 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>3 0.12 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+
+    <!-- ===================== DYNAMIC CARS ===================== -->
+    <!--
+      car_red   : lane y=+1.2  -> direction WEST to EAST (linear.x = +7)
+      car_blue  : lane y=-1.2  -> direction EAST to WEST (linear.x = -7)
+      car_white : lane y=+4.0  -> direction WEST to EAST (linear.x = +5)
+      Reset is handled by car_controller ROS2 node.
+    -->
+
+    <!-- CAR RED: West -> East, fast lane -->
+    <model name="car_red">
+      <pose>-30 -5.0 0.38 0 0 0</pose>
+      <link name="chassis">
+        <inertial>
+          <mass>1200</mass>
+          <inertia>
+            <ixx>400</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>1800</iyy><iyz>0</iyz><izz>1800</izz>
+          </inertia>
+        </inertial>
+        <!-- Car body -->
+        <visual name="body">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry><box><size>4.2 1.8 0.65</size></box></geometry>
+          <material><ambient>0.82 0.08 0.08 1</ambient><diffuse>0.85 0.10 0.10 1</diffuse></material>
+        </visual>
+        <!-- Cabin -->
+        <visual name="cabin">
+          <pose>-0.3 0 0.55 0 0 0</pose>
+          <geometry><box><size>2.0 1.55 0.50</size></box></geometry>
+          <material><ambient>0.60 0.05 0.05 1</ambient><diffuse>0.65 0.07 0.07 1</diffuse></material>
+        </visual>
+        <!-- Front windshield (dark glass) -->
+        <visual name="windshield">
+          <pose>0.7 0 0.78 0 0.3 0</pose>
+          <geometry><box><size>0.08 1.4 0.40</size></box></geometry>
+          <material><ambient>0.1 0.1 0.2 0.7</ambient><diffuse>0.1 0.1 0.2 0.7</diffuse></material>
+        </visual>
+        <!-- Wheels -->
+        <visual name="wfl"><pose>1.3  0.95 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.28</radius><length>0.20</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wfr"><pose>1.3 -0.95 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.28</radius><length>0.20</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wrl"><pose>-1.3  0.95 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.28</radius><length>0.20</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wrr"><pose>-1.3 -0.95 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.28</radius><length>0.20</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <!-- Collision box -->
+        <collision name="col">
+          <geometry><box><size>4.2 1.8 1.05</size></box></geometry>
+        </collision>
+      </link>
+      <!-- VelocityControl: initial speed EAST (+x) -->
+      <plugin filename="gz-sim-velocity-control-system"
+              name="gz::sim::systems::VelocityControl">
+        <initial_linear>7.0 0 0</initial_linear>
+        <initial_angular>0 0 0</initial_angular>
+        <topic>/car_red_cmd_vel</topic>
+      </plugin>
+    </model>
+
+    <!-- CAR BLUE: East -> West, opposite lane -->
+    <model name="car_blue">
+      <pose>30 -8.5 0.38 0 0 3.14159</pose>
+      <link name="chassis">
+        <inertial>
+          <mass>1100</mass>
+          <inertia><ixx>400</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1700</iyy><iyz>0</iyz><izz>1700</izz></inertia>
+        </inertial>
+        <visual name="body">
+          <geometry><box><size>4.2 1.8 0.65</size></box></geometry>
+          <material><ambient>0.08 0.18 0.75 1</ambient><diffuse>0.10 0.20 0.80 1</diffuse></material>
+        </visual>
+        <visual name="cabin">
+          <pose>-0.3 0 0.55 0 0 0</pose>
+          <geometry><box><size>2.0 1.55 0.50</size></box></geometry>
+          <material><ambient>0.05 0.12 0.55 1</ambient><diffuse>0.07 0.14 0.60 1</diffuse></material>
+        </visual>
+        <visual name="wfl"><pose>1.3  0.95 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.28</radius><length>0.20</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wfr"><pose>1.3 -0.95 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.28</radius><length>0.20</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wrl"><pose>-1.3  0.95 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.28</radius><length>0.20</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wrr"><pose>-1.3 -0.95 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.28</radius><length>0.20</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <collision name="col">
+          <geometry><box><size>4.2 1.8 1.05</size></box></geometry>
+        </collision>
+      </link>
+      <plugin filename="gz-sim-velocity-control-system"
+              name="gz::sim::systems::VelocityControl">
+        <initial_linear>6.5 0 0</initial_linear>
+        <initial_angular>0 0 0</initial_angular>
+        <topic>/car_blue_cmd_vel</topic>
+      </plugin>
+    </model>
+
+    <!-- CAR WHITE: Second east lane, slower -->
+    <model name="car_white">
+      <pose>-18 -12 0.38 0 0 0</pose>
+      <link name="chassis">
+        <inertial>
+          <mass>1300</mass>
+          <inertia><ixx>450</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1900</iyy><iyz>0</iyz><izz>1900</izz></inertia>
+        </inertial>
+        <visual name="body">
+          <geometry><box><size>4.5 2.0 0.70</size></box></geometry>
+          <material><ambient>0.90 0.90 0.88 1</ambient><diffuse>0.93 0.93 0.91 1</diffuse></material>
+        </visual>
+        <visual name="cabin">
+          <pose>-0.4 0 0.58 0 0 0</pose>
+          <geometry><box><size>2.2 1.75 0.52</size></box></geometry>
+          <material><ambient>0.70 0.70 0.68 1</ambient><diffuse>0.72 0.72 0.70 1</diffuse></material>
+        </visual>
+        <visual name="wfl"><pose>1.4  1.05 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.30</radius><length>0.22</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wfr"><pose>1.4 -1.05 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.30</radius><length>0.22</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wrl"><pose>-1.4  1.05 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.30</radius><length>0.22</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <visual name="wrr"><pose>-1.4 -1.05 -0.22 1.5708 0 0</pose><geometry><cylinder><radius>0.30</radius><length>0.22</length></cylinder></geometry><material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.12 0.12 0.12 1</diffuse></material></visual>
+        <collision name="col">
+          <geometry><box><size>4.5 2.0 1.10</size></box></geometry>
+        </collision>
+      </link>
+      <plugin filename="gz-sim-velocity-control-system"
+              name="gz::sim::systems::VelocityControl">
+        <initial_linear>5.0 0 0</initial_linear>
+        <initial_angular>0 0 0</initial_angular>
+        <topic>/car_white_cmd_vel</topic>
+      </plugin>
+    </model>
+
+    <!-- ===================== TRANSITION ZONE (y: 3 to 10) ===================== -->
+
+    <!-- Sidewalk strip -->
+    <model name="sidewalk">
+      <static>true</static>
+      <pose>0 6.5 0.06 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>80 7 0.12</size></box></geometry></collision>
+        <visual name="vis"><geometry><box><size>80 7 0.12</size></box></geometry>
+          <material><ambient>0.76 0.74 0.70 1</ambient><diffuse>0.80 0.78 0.74 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- === STATIC OBSTACLES ON PATH === -->
+
+    <!-- Bench (ground level, solid obstacle) -->
+    <model name="bench">
+      <static>true</static>
+      <pose>5 2 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>1.5 0.5 0.5</size></box></geometry></collision>
+        <visual name="seat">
+          <geometry><box><size>1.5 0.5 0.1</size></box></geometry>
+          <material><ambient>0.5 0.3 0.1 1</ambient><diffuse>0.6 0.35 0.12 1</diffuse></material>
+        </visual>
+        <visual name="leg_l">
+          <pose>0.6 0 -0.2 0 0 0</pose>
+          <geometry><box><size>0.1 0.4 0.4</size></box></geometry>
+          <material><ambient>0.4 0.25 0.08 1</ambient><diffuse>0.5 0.30 0.10 1</diffuse></material>
+        </visual>
+        <visual name="leg_r">
+          <pose>-0.6 0 -0.2 0 0 0</pose>
+          <geometry><box><size>0.1 0.4 0.4</size></box></geometry>
+          <material><ambient>0.4 0.25 0.08 1</ambient><diffuse>0.5 0.30 0.10 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Lamp post -->
+    <model name="lamp_post">
+      <static>true</static>
+      <pose>-4 2 0 0 0 0</pose>
+      <link name="pole">
+        <collision name="col"><geometry><cylinder><radius>0.07</radius><length>4.0</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <pose>0 0 2.0 0 0 0</pose>
+          <geometry><cylinder><radius>0.07</radius><length>4.0</length></cylinder></geometry>
+          <material><ambient>0.55 0.55 0.55 1</ambient><diffuse>0.60 0.60 0.60 1</diffuse></material>
+        </visual>
+        <visual name="lamp">
+          <pose>0.4 0 3.8 0 0 0</pose>
+          <geometry><sphere><radius>0.18</radius></sphere></geometry>
+          <material><ambient>1.0 1.0 0.85 1</ambient><diffuse>1.0 1.0 0.85 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Bollard (low obstacle at knee height) -->
+    <model name="bollard_1">
+      <static>true</static>
+      <pose>10 1 0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.12</radius><length>0.9</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <pose>0 0 0.45 0 0 0</pose>
+          <geometry><cylinder><radius>0.12</radius><length>0.9</length></cylinder></geometry>
+          <material><ambient>1.0 0.5 0.0 1</ambient><diffuse>1.0 0.55 0.02 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="bollard_2">
+      <static>true</static>
+      <pose>10 -1 0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.12</radius><length>0.9</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <pose>0 0 0.45 0 0 0</pose>
+          <geometry><cylinder><radius>0.12</radius><length>0.9</length></cylinder></geometry>
+          <material><ambient>1.0 0.5 0.0 1</ambient><diffuse>1.0 0.55 0.02 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ===================== FOREST ZONE (y: 10 to 50) ===================== -->
+
+    <!-- Forest floor (darker) -->
+    <model name="forest_floor">
+      <static>true</static>
+      <pose>0 30 0.005 0 0 0</pose>
+      <link name="link">
+        <visual name="vis">
+          <geometry><box><size>80 40 0.01</size></box></geometry>
+          <material>
+            <ambient>0.12 0.28 0.08 1</ambient>
+            <diffuse>0.14 0.32 0.10 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Forest path through the middle -->
+    <model name="forest_path">
+      <static>true</static>
+      <pose>0 30 0.01 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>3 40 0.02</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>3 40 0.02</size></box></geometry>
+          <material><ambient>0.48 0.35 0.18 1</ambient><diffuse>0.52 0.38 0.20 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- TREES (trunk = dark brown cylinder, canopy = dark green sphere) -->
+
+    <!-- Tree 1 -->
+    <model name="tree_01"><static>true</static><pose>-6 14 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.20</radius><length>3.0</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 1.5 0 0 0</pose><geometry><cylinder><radius>0.20</radius><length>3.0</length></cylinder></geometry><material><ambient>0.35 0.18 0.06 1</ambient><diffuse>0.40 0.22 0.08 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 3.8 0 0 0</pose><geometry><sphere><radius>1.5</radius></sphere></geometry><material><ambient>0.10 0.35 0.08 1</ambient><diffuse>0.12 0.40 0.10 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 2 -->
+    <model name="tree_02"><static>true</static><pose>8 17 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.22</radius><length>3.5</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 1.75 0 0 0</pose><geometry><cylinder><radius>0.22</radius><length>3.5</length></cylinder></geometry><material><ambient>0.32 0.16 0.05 1</ambient><diffuse>0.38 0.20 0.07 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 4.5 0 0 0</pose><geometry><sphere><radius>1.8</radius></sphere></geometry><material><ambient>0.08 0.32 0.06 1</ambient><diffuse>0.10 0.38 0.08 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 3 -->
+    <model name="tree_03"><static>true</static><pose>-12 20 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.25</radius><length>4.0</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 2.0 0 0 0</pose><geometry><cylinder><radius>0.25</radius><length>4.0</length></cylinder></geometry><material><ambient>0.30 0.15 0.05 1</ambient><diffuse>0.36 0.18 0.06 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 5.2 0 0 0</pose><geometry><sphere><radius>2.0</radius></sphere></geometry><material><ambient>0.08 0.30 0.06 1</ambient><diffuse>0.10 0.35 0.08 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 4 -->
+    <model name="tree_04"><static>true</static><pose>5 23 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.18</radius><length>3.0</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 1.5 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>3.0</length></cylinder></geometry><material><ambient>0.35 0.17 0.06 1</ambient><diffuse>0.40 0.20 0.08 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 3.6 0 0 0</pose><geometry><sphere><radius>1.4</radius></sphere></geometry><material><ambient>0.12 0.38 0.10 1</ambient><diffuse>0.14 0.42 0.12 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 5 -->
+    <model name="tree_05"><static>true</static><pose>-4 27 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.28</radius><length>5.0</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 2.5 0 0 0</pose><geometry><cylinder><radius>0.28</radius><length>5.0</length></cylinder></geometry><material><ambient>0.28 0.14 0.04 1</ambient><diffuse>0.34 0.17 0.06 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 6.2 0 0 0</pose><geometry><sphere><radius>2.2</radius></sphere></geometry><material><ambient>0.07 0.28 0.05 1</ambient><diffuse>0.09 0.33 0.07 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 6 -->
+    <model name="tree_06"><static>true</static><pose>14 25 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.20</radius><length>3.5</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 1.75 0 0 0</pose><geometry><cylinder><radius>0.20</radius><length>3.5</length></cylinder></geometry><material><ambient>0.33 0.16 0.05 1</ambient><diffuse>0.38 0.19 0.07 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 4.3 0 0 0</pose><geometry><sphere><radius>1.6</radius></sphere></geometry><material><ambient>0.09 0.34 0.07 1</ambient><diffuse>0.11 0.38 0.09 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 7 -->
+    <model name="tree_07"><static>true</static><pose>-18 30 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.22</radius><length>4.0</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 2.0 0 0 0</pose><geometry><cylinder><radius>0.22</radius><length>4.0</length></cylinder></geometry><material><ambient>0.30 0.15 0.05 1</ambient><diffuse>0.36 0.18 0.06 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 5.0 0 0 0</pose><geometry><sphere><radius>1.9</radius></sphere></geometry><material><ambient>0.08 0.30 0.06 1</ambient><diffuse>0.10 0.36 0.08 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 8 -->
+    <model name="tree_08"><static>true</static><pose>10 32 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.19</radius><length>3.0</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 1.5 0 0 0</pose><geometry><cylinder><radius>0.19</radius><length>3.0</length></cylinder></geometry><material><ambient>0.34 0.17 0.06 1</ambient><diffuse>0.39 0.20 0.08 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 3.7 0 0 0</pose><geometry><sphere><radius>1.5</radius></sphere></geometry><material><ambient>0.11 0.36 0.09 1</ambient><diffuse>0.13 0.40 0.11 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 9 -->
+    <model name="tree_09"><static>true</static><pose>-8 35 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.24</radius><length>4.5</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 2.25 0 0 0</pose><geometry><cylinder><radius>0.24</radius><length>4.5</length></cylinder></geometry><material><ambient>0.29 0.14 0.04 1</ambient><diffuse>0.34 0.17 0.05 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 5.6 0 0 0</pose><geometry><sphere><radius>2.1</radius></sphere></geometry><material><ambient>0.07 0.27 0.05 1</ambient><diffuse>0.09 0.32 0.07 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- Tree 10 -->
+    <model name="tree_10"><static>true</static><pose>20 18 0 0 0 0</pose>
+      <link name="trunk"><collision name="col"><geometry><cylinder><radius>0.21</radius><length>3.2</length></cylinder></geometry></collision>
+        <visual name="v"><pose>0 0 1.6 0 0 0</pose><geometry><cylinder><radius>0.21</radius><length>3.2</length></cylinder></geometry><material><ambient>0.33 0.16 0.05 1</ambient><diffuse>0.38 0.19 0.07 1</diffuse></material></visual>
+        <visual name="c"><pose>0 0 4.0 0 0 0</pose><geometry><sphere><radius>1.7</radius></sphere></geometry><material><ambient>0.10 0.33 0.08 1</ambient><diffuse>0.12 0.38 0.10 1</diffuse></material></visual>
+      </link></model>
+
+    <!-- === FOREST SPECIAL OBSTACLES (head/body height) === -->
+
+    <!-- Low branch at HEAD HEIGHT (1.5m) - CRITICAL danger for blind user -->
+    <model name="branch_low_1">
+      <static>true</static>
+      <pose>3 16 1.45 0 1.5708 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.05</radius><length>2.5</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>0.05</radius><length>2.5</length></cylinder></geometry>
+          <material><ambient>0.38 0.19 0.07 1</ambient><diffuse>0.42 0.22 0.09 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Another low branch at chest height -->
+    <model name="branch_low_2">
+      <static>true</static>
+      <pose>-2 22 1.2 0 1.5708 0.5</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.04</radius><length>1.8</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>0.04</radius><length>1.8</length></cylinder></geometry>
+          <material><ambient>0.36 0.18 0.06 1</ambient><diffuse>0.40 0.21 0.08 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Rock 1 (low, ground level) -->
+    <model name="rock_1">
+      <static>true</static>
+      <pose>-8 15 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="vis">
+          <geometry><sphere><radius>0.35</radius></sphere></geometry>
+          <material><ambient>0.50 0.48 0.45 1</ambient><diffuse>0.55 0.53 0.50 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Rock 2 -->
+    <model name="rock_2">
+      <static>true</static>
+      <pose>6 20 0.18 0.2 0.1 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><sphere><radius>0.25</radius></sphere></geometry></collision>
+        <visual name="vis">
+          <geometry><sphere><radius>0.25</radius></sphere></geometry>
+          <material><ambient>0.48 0.46 0.43 1</ambient><diffuse>0.52 0.50 0.47 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Fallen log (horizontal trunk on ground) -->
+    <model name="fallen_log">
+      <static>true</static>
+      <pose>-1 29 0.15 0 1.5708 0.4</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.18</radius><length>2.8</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>0.18</radius><length>2.8</length></cylinder></geometry>
+          <material><ambient>0.35 0.18 0.06 1</ambient><diffuse>0.40 0.22 0.08 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Small signpost in forest (body height) -->
+    <model name="forest_sign">
+      <static>true</static>
+      <pose>2 12 0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.05</radius><length>1.8</length></cylinder></geometry></collision>
+        <visual name="pole"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.05</radius><length>1.8</length></cylinder></geometry>
+          <material><ambient>0.60 0.50 0.20 1</ambient><diffuse>0.65 0.55 0.22 1</diffuse></material>
+        </visual>
+        <visual name="sign_panel">
+          <pose>0 0 1.7 0 0 0</pose>
+          <geometry><box><size>0.4 0.04 0.3</size></box></geometry>
+          <material><ambient>0.15 0.45 0.15 1</ambient><diffuse>0.18 0.50 0.18 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Hedge (at body height, blocks passage) -->
+    <model name="hedge_1">
+      <static>true</static>
+      <pose>-3 13 0.6 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>0.6 2.0 1.2</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>0.6 2.0 1.2</size></box></geometry>
+          <material><ambient>0.15 0.48 0.12 1</ambient><diffuse>0.18 0.52 0.14 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
