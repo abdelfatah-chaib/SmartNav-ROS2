@@ -63,7 +63,8 @@ def generate_launch_description():
     #    (/smartnav/cmd_vel) accessible depuis tout processus externe.
     #    Plus besoin de spawn dynamique (qui causait des échecs de découverte gz-transport).
 
-    # 3b. Remise à zéro périodique des voitures dynamiques (PERIOD=7s < 8.3s de traversée)
+    # 3b. Bouclage position-based des voitures (reset_cars_loop.py).
+    #     Chaque voiture parcourt toute la route puis est replacée au départ.
     #     Lancé 5 s après Gazebo pour laisser le moteur physique s'initialiser.
     reset_cars = TimerAction(
         period=5.0,
@@ -132,8 +133,10 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         name='static_tf_laser',
-        arguments=['0', '0', '0', '0', '0', '0',
-                   'base_link', 'smartnav/base_link/laser_sensor'],
+        arguments=['--x', '0', '--y', '0', '--z', '0',
+                   '--roll', '0', '--pitch', '0', '--yaw', '0',
+                   '--frame-id', 'base_link',
+                   '--child-frame-id', 'smartnav/base_link/laser_sensor'],
         output='screen',
     )
 

@@ -7,6 +7,7 @@ set -euo pipefail
 WORLD="${1:-smartnav_world}"
 
 python3 - "$WORLD" <<'PY'
+import fcntl
 import math
 import re
 import subprocess
@@ -17,6 +18,7 @@ import time
 WORLD = sys.argv[1]
 MODEL = "blind_person"
 CAR_MODELS = ("moving_car_A", "moving_car_B")
+GZ_LOCK_PATH = "/tmp/smartnav_gz_transport.lock"
 
 # Motion parameters.
 DT = 0.10
@@ -26,7 +28,8 @@ YAW_RATE_RADPS = 1.20
 
 # Safety: wait at curb if a car arrives within this window.
 CROSSING_X = 3.0
-CAR_SPEED_MPS = 7.0
+# Measured in Gazebo (~5.2 m/s); must match actual car speed for ETA safety.
+CAR_SPEED_MPS = 5.2
 UNSAFE_ETA_S = 7.0
 
 SAFETY_CHECK_DT = 0.30
@@ -39,6 +42,19 @@ _req_lock = threading.Lock()
 _wake = threading.Event()
 
 
+def _run_gz(args: list, timeout: float = 2.0) -> subprocess.CompletedProcess:
+    with open(GZ_LOCK_PATH, "w", encoding="utf-8") as lock_file:
+        fcntl.flock(lock_file, fcntl.LOCK_EX)
+        return subprocess.run(
+            args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=timeout,
+            check=False,
+        )
+
+
 def _pose_worker() -> None:
     while True:
         _wake.wait(timeout=1.0)
@@ -48,7 +64,7 @@ def _pose_worker() -> None:
             _next_req[0] = None
         if not req:
             continue
-        subprocess.run(
+        _run_gz(
             [
                 "gz", "service",
                 "-s", f"/world/{WORLD}/set_pose",
@@ -57,9 +73,7 @@ def _pose_worker() -> None:
                 "--timeout", "200",
                 "--req", req,
             ],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            check=False,
+            timeout=3.0,
         )
 
 
@@ -110,17 +124,13 @@ def set_pose(x: float, y: float, yaw: float) -> None:
 
 def get_models_xy(model_names: tuple) -> dict:
     try:
-        result = subprocess.run(
+        result = _run_gz(
             [
                 "gz", "topic",
                 "-e", "-n", "1",
                 "-t", f"/world/{WORLD}/pose/info",
             ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            text=True,
             timeout=1.0,
-            check=False,
         )
     except subprocess.TimeoutExpired:
         return {}

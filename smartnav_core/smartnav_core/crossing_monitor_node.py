@@ -17,6 +17,7 @@ Why distance instead of ETA:
 
 from __future__ import annotations
 
+import fcntl
 import math
 import re
 import subprocess
@@ -38,6 +39,7 @@ ALERT_TOPIC = '/smartnav/crossing_alert'
 DEFAULT_DANGER_RADIUS_M = 3.5
 DEFAULT_WARN_RADIUS_M = 6.0
 CHECK_HZ = 2.0
+GZ_LOCK_PATH = '/tmp/smartnav_gz_transport.lock'
 
 
 def _extract_models_xy(
@@ -128,14 +130,16 @@ class CrossingMonitorNode(Node):
         self, models: tuple[str, ...]
     ) -> dict[str, tuple[float, float]]:
         try:
-            result = subprocess.run(
-                ['gz', 'topic', '-e', '-n', '1', '-t', POSE_TOPIC],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.DEVNULL,
-                text=True,
-                timeout=1.0,
-                check=False,
-            )
+            with open(GZ_LOCK_PATH, 'w', encoding='utf-8') as lock_file:
+                fcntl.flock(lock_file, fcntl.LOCK_EX)
+                result = subprocess.run(
+                    ['gz', 'topic', '-e', '-n', '1', '-t', POSE_TOPIC],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.DEVNULL,
+                    text=True,
+                    timeout=1.0,
+                    check=False,
+                )
         except subprocess.TimeoutExpired:
             return {}
         if result.returncode != 0 or not result.stdout:

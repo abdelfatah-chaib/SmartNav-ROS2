@@ -46,7 +46,12 @@ MODE_AUTONOMOUS = 'autonomous'
 SCAN_TOPIC = '/scan'
 CMD_VEL_TOPIC = '/cmd_vel'
 MODE_TOPIC = '/smartnav/mode'
-ALERT_TOPIC = '/smartnav/alert_level'
+# DANGER_HOLD (arret total) est reserve au danger imminent de VOITURE, publie
+# par crossing_monitor_node sur /smartnav/crossing_alert. Les obstacles
+# statiques (arbres, bancs...) detectes par le LiDAR passent uniquement par
+# OBSTACLE_DETECTED -> AVOIDANCE (contournement) et ne doivent jamais declencher
+# DANGER_HOLD, sinon le robot reste bloque indefiniment devant un obstacle fixe.
+ALERT_TOPIC = '/smartnav/crossing_alert'
 
 CONTROL_HZ = 20.0
 WANDER_LINEAR_X = 0.3
