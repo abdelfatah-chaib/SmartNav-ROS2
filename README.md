@@ -64,6 +64,12 @@ Terminal 1: Launch the physical simulation (Gazebo) and visualization interface 
 ros2 launch smartnav_core start_simulation.launch.py
 ```
 
+By default, the launch uses `city.world`. To force the legacy scene, run:
+
+```bash
+ros2 launch smartnav_core start_simulation.launch.py world:=smartnav.world
+```
+
 Terminal 2: Activate the perception module (LiDAR data analysis)
 
 ```bash

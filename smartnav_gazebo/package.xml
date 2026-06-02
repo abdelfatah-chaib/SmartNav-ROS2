@@ -2,10 +2,10 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>smartnav_gazebo</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="abdelfatah@todo.todo">abdelfatah</maintainer>
-  <license>TODO: License declaration</license>
+  <version>1.0.0</version>
+  <description>SmartNav Gazebo package: simulation worlds (city, simple) and scenario utilities for the smart white cane project.</description>
+  <maintainer email="abdelfatahchaib@gmail.com">abdelfatah</maintainer>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

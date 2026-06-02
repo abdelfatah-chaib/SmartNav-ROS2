@@ -2,7 +2,7 @@
 <!--
   SmartNav World — Gazebo Sim Harmonic / ROS2
   ✅ Zéro fichier .dae externe requis
-  ✅ 2 voitures dynamiques avec vitesse constante (VelocityControl)
+  ✅ 2 voitures dynamiques avec vitesse constante (VelocityControl) 12 m/s
   ✅ Design original 100% conservé
 -->
 <sdf version="1.9">
@@ -44,16 +44,16 @@
     </model>
 
     <!-- ================================================ ROUTES ================================================ -->
-    <model name="road_main"><static>true</static><pose>0 0 0.02 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>60 8 0.04</size></box></geometry></collision><visual name="vis"><geometry><box><size>60 8 0.04</size></box></geometry><material><ambient>0.22 0.22 0.22 1</ambient><diffuse>0.28 0.28 0.28 1</diffuse></material></visual></link></model>
-    <model name="road_cross"><static>true</static><pose>0 0 0.02 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>8 60 0.04</size></box></geometry></collision><visual name="vis"><geometry><box><size>8 60 0.04</size></box></geometry><material><ambient>0.22 0.22 0.22 1</ambient><diffuse>0.28 0.28 0.28 1</diffuse></material></visual></link></model>
+    <model name="road_main"><static>true</static><pose>0 0 0.02 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>120 8 0.04</size></box></geometry></collision><visual name="vis"><geometry><box><size>120 8 0.04</size></box></geometry><material><ambient>0.22 0.22 0.22 1</ambient><diffuse>0.28 0.28 0.28 1</diffuse></material></visual></link></model>
+    <model name="road_cross"><static>true</static><pose>0 0 0.02 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>8 120 0.04</size></box></geometry></collision><visual name="vis"><geometry><box><size>8 120 0.04</size></box></geometry><material><ambient>0.22 0.22 0.22 1</ambient><diffuse>0.28 0.28 0.28 1</diffuse></material></visual></link></model>
 
     <!-- ================================================ TROTTOIRS ================================================ -->
-    <model name="sidewalk_north"><static>true</static><pose>0 5 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>60 2 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>60 2 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
-    <model name="sidewalk_south"><static>true</static><pose>0 -5 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>60 2 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>60 2 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
-    <model name="sidewalk_east_S"><static>true</static><pose>5 -18 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>2 24 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>2 24 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
-    <model name="sidewalk_east_N"><static>true</static><pose>5 18 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>2 24 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>2 24 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
-    <model name="sidewalk_west_S"><static>true</static><pose>-5 -18 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>2 24 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>2 24 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
-    <model name="sidewalk_west_N"><static>true</static><pose>-5 18 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>2 24 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>2 24 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
+    <model name="sidewalk_north"><static>true</static><pose>0 5 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>120 2 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>120 2 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
+    <model name="sidewalk_south"><static>true</static><pose>0 -5 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>120 2 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>120 2 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
+    <model name="sidewalk_east_S"><static>true</static><pose>5 -33 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>2 54 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>2 54 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
+    <model name="sidewalk_east_N"><static>true</static><pose>5 33 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>2 54 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>2 54 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
+    <model name="sidewalk_west_S"><static>true</static><pose>-5 -33 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>2 54 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>2 54 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
+    <model name="sidewalk_west_N"><static>true</static><pose>-5 33 0.06 0 0 0</pose><link name="link"><collision name="col"><geometry><box><size>2 54 0.12</size></box></geometry></collision><visual name="vis"><geometry><box><size>2 54 0.12</size></box></geometry><material><ambient>0.73 0.73 0.71 1</ambient><diffuse>0.80 0.80 0.78 1</diffuse></material></visual></link></model>
 
     <!-- ================================================ MARQUAGES ================================================ -->
     <model name="dm_w1"><static>true</static><pose>-26 0 0.05 0 0 0</pose><link name="l"><visual name="v"><geometry><box><size>2 0.15 0.01</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
@@ -149,7 +149,7 @@
     <!-- ================================================
          VOITURES DYNAMIQUES — méthode VelocityControl
          ✅ Zéro fichier .dae
-         ✅ Vitesse constante 7 m/s ≈ 25 km/h
+         ✅ Vitesse constante 12 m/s ≈ 43 km/h
          ✅ Compatible Gazebo Harmonic / ROS2 Jazzy
 
          Voiture A (ROUGE)  : voie nord  y=+2  W→E
@@ -163,7 +163,7 @@
     <!-- ── Voiture A : ROUGE — W→E — voie nord y=+2 ── -->
     <model name="moving_car_A">
       <!-- Orientée +X = direction W→E -->
-      <pose>-28 2 0.54 0 0 0</pose>
+      <pose>-58 2 0.54 0 0 0</pose>
       <link name="chassis">
         <inertial>
           <mass>1200</mass>
@@ -214,7 +214,7 @@
     <!-- ── Voiture B : BLEUE — E→W — voie sud y=-2 ── -->
     <model name="moving_car_B">
       <!-- Orientée à π (face W) donc +X local = E→W en global -->
-      <pose>28 -2 0.54 0 0 3.1416</pose>
+      <pose>58 -2 0.54 0 0 3.1416</pose>
       <link name="chassis">
         <inertial>
           <mass>1200</mass>
@@ -261,10 +261,18 @@
          La voiture A passe à 1.4 m → zone de DANGER détectée par la canne
          ══════════════════════════════════════════════════════════════ -->
     <model name="blind_person">
-      <static>true</static>
+      <static>false</static>
       <!-- yaw=-1.5708 : regarde vers le sud = vers la route à traverser -->
       <pose>3 4.3 0 0 0 -1.5708</pose>
       <link name="body">
+        <kinematic>true</kinematic>
+        <inertial>
+          <mass>70.0</mass>
+          <inertia>
+            <ixx>8.0</ixx><ixy>0.0</ixy><ixz>0.0</ixz>
+            <iyy>8.0</iyy><iyz>0.0</iyz><izz>2.0</izz>
+          </inertia>
+        </inertial>
 
         <!-- ── JAMBES (pantalon sombre) ── -->
         <visual name="legs">
@@ -402,6 +410,80 @@
         </visual>
 
       </link>
+    </model>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         ROBOT SMARTNAV — cylindre bleu + capteur LiDAR + canne rouge
+         Démarre sur le trottoir nord  x=-3  y=5  z=0.20
+         VelocityControl sur topic absolu /smartnav/cmd_vel
+         LiDAR 360° 10m topic : world/smartnav_world/model/smartnav/
+                                  link/base_link/sensor/laser_sensor/scan
+         ══════════════════════════════════════════════════════════════ -->
+    <model name="smartnav">
+      <pose>-3 5 0.20 0 0 0</pose>
+
+      <link name="base_link">
+        <inertial>
+          <mass>65</mass>
+          <inertia>
+            <ixx>28.5</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>28.5</iyy><iyz>0</iyz><izz>2.03</izz>
+          </inertia>
+        </inertial>
+
+        <!-- Corps : cylindre bleu -->
+        <visual name="body">
+          <pose>0 0 0.8 0 0 0</pose>
+          <geometry><cylinder><radius>0.25</radius><length>1.6</length></cylinder></geometry>
+          <material>
+            <ambient>0.1 0.1 0.8 1</ambient>
+            <diffuse>0.1 0.1 0.8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="body_col">
+          <pose>0 0 0.8 0 0 0</pose>
+          <geometry><cylinder><radius>0.25</radius><length>1.6</length></cylinder></geometry>
+        </collision>
+
+        <!-- Canne : tige rouge inclinée vers l'avant -->
+        <visual name="cane">
+          <pose>0.22 0.15 0.95 0 1.0 0</pose>
+          <geometry><cylinder><radius>0.015</radius><length>1.0</length></cylinder></geometry>
+          <material>
+            <ambient>0.8 0.1 0.1 1</ambient>
+            <diffuse>0.8 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- LiDAR 360° monté au sommet du robot (z=1.6) -->
+        <sensor name="laser_sensor" type="gpu_lidar">
+          <pose>0 0 1.6 0 0 0</pose>
+          <update_rate>20</update_rate>
+          <always_on>true</always_on>
+          <visualize>false</visualize>
+          <lidar>
+            <scan>
+              <horizontal>
+                <samples>360</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.14159265</min_angle>
+                <max_angle>3.14159265</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.1</min>
+              <max>10.0</max>
+              <resolution>0.01</resolution>
+            </range>
+          </lidar>
+        </sensor>
+      </link>
+
+      <!-- VelocityControl : topic absolu → fiable depuis un processus externe -->
+      <plugin filename="gz-sim-velocity-control-system"
+              name="gz::sim::systems::VelocityControl">
+        <topic>/smartnav/cmd_vel</topic>
+      </plugin>
     </model>
 
   </world>

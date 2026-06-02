@@ -69,18 +69,18 @@ VelocityControl applique la vitesse sur le robot
 Dans un premier terminal :
 
 ```bash
-cd /home/zineb/SmartNav-ROS2
+cd /home/abdelfatah/smartnav_ws
 source /opt/ros/jazzy/setup.bash
-colcon build --packages-select smartnav_description smartnav_core smartnav_gazebo
-source /home/zineb/SmartNav-ROS2/install/setup.bash
+colcon build --symlink-install
+source /home/abdelfatah/smartnav_ws/install/setup.bash
 ros2 launch smartnav_core start_simulation.launch.py
 ```
 
-Dans un deuxième terminal :
+Dans un deuxième terminal (téléopération manuelle optionnelle) :
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-source /home/zineb/SmartNav-ROS2/install/setup.bash
+source /home/abdelfatah/smartnav_ws/install/setup.bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 
@@ -113,7 +113,7 @@ terminal et exécuter :
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-source /home/zineb/SmartNav-ROS2/install/setup.bash
+source /home/abdelfatah/smartnav_ws/install/setup.bash
 ros2 run smartnav_core patrol
 ```
 
@@ -179,6 +179,6 @@ Si le robot ne bouge plus dans le futur, vérifier en priorité :
 
 - que Gazebo n'est pas en pause
 - que le bon workspace est sourcé :
-  `/home/zineb/SmartNav-ROS2/install/setup.bash`
+  `/home/abdelfatah/smartnav_ws/install/setup.bash`
 - que le topic `/cmd_vel` contient bien des messages `Twist`
 - que le launch utilisé est bien `smartnav_core/start_simulation.launch.py`

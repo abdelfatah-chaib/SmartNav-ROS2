@@ -6,7 +6,7 @@
 # ============================================================
 
 WORLD="smartnav_world"
-PERIOD=15         # reset toutes les 7 s (road=60m / 7m·s⁻¹ = 8s → reset avant sortie)
+PERIOD=16         # reset toutes les 16 s (road~120m / 7m·s⁻¹ = 17.1s)
 
 # Quaternion yaw=0      → w=1 z=0  (moving_car_A, W→E)
 # Quaternion yaw=π      → w=0 z=1  (moving_car_B, E→W)
@@ -25,25 +25,25 @@ sleep 3
 while true; do
   sleep $PERIOD
 
-  # ── Voiture A (ROUGE) : retour à l'ouest x=-28, voie nord y=+2 ──
+  # ── Voiture A (ROUGE) : retour à l'ouest x=-58, voie nord y=+2 ──
   gz service -s /world/$WORLD/set_pose \
     --reqtype gz.msgs.Pose \
     --reptype gz.msgs.Boolean \
     --req "name: 'moving_car_A'
-           position { x: -28.0  y: 2.0  z: 0.54 }
+           position { x: -58.0  y: 2.0  z: 0.54 }
            orientation { x: 0.0  y: 0.0  z: 0.0  w: 1.0 }" \
     --timeout 1000 > /dev/null 2>&1
 
-  echo "$(date +%H:%M:%S)  ↺  moving_car_A  → x=-28  (W→E)"
+  echo "$(date +%H:%M:%S)  ↺  moving_car_A  → x=-58  (W→E)"
 
-  # ── Voiture B (BLEUE) : retour à l'est x=+28, voie sud y=-2 ──
+  # ── Voiture B (BLEUE) : retour à l'est x=+58, voie sud y=-2 ──
   gz service -s /world/$WORLD/set_pose \
     --reqtype gz.msgs.Pose \
     --reptype gz.msgs.Boolean \
     --req "name: 'moving_car_B'
-           position { x: 28.0  y: -2.0  z: 0.54 }
+           position { x: 58.0  y: -2.0  z: 0.54 }
            orientation { x: 0.0  y: 0.0  z: 1.0  w: 0.0 }" \
     --timeout 1000 > /dev/null 2>&1
 
-  echo "$(date +%H:%M:%S)  ↺  moving_car_B  → x=+28  (E→W)"
+  echo "$(date +%H:%M:%S)  ↺  moving_car_B  → x=+58  (E→W)"
 done
