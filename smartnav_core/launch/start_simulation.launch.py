@@ -102,6 +102,23 @@ def generate_launch_description():
                 output='screen',
             )
         ],
+
+    )
+
+ros_gz_bridge_poses = TimerAction(
+        period=5.0,
+        actions=[
+            Node(
+                package='ros_gz_bridge',
+                executable='parameter_bridge',
+                arguments=[
+                    '/model/smartnav/pose@geometry_msgs/msg/Pose[gz.msgs.Pose',
+                    '/model/moving_car_A/pose@geometry_msgs/msg/Pose[gz.msgs.Pose',
+                    '/model/moving_car_B/pose@geometry_msgs/msg/Pose[gz.msgs.Pose',
+                ],
+                output='screen',
+            )
+        ],
     )
 
     # 5. Relay cmd_vel — robot dans le world SDF, VelocityControl prêt après 5 s.
