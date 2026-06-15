@@ -1,1 +1,0 @@
-/home/info/smartnav_ws/build/smartnav_description/ament_cmake_core/smartnav_descriptionConfig.cmake

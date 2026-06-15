@@ -1,1 +1,0 @@
-/home/info/smartnav_ws/src/smartnav_gazebo/worlds/reset_cars.sh

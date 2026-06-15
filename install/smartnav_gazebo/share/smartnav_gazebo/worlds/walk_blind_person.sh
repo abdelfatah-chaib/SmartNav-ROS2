@@ -1,1 +1,0 @@
-/home/info/smartnav_ws/src/smartnav_gazebo/worlds/walk_blind_person.sh
