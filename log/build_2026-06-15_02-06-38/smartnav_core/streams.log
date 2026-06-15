@@ -1,0 +1,36 @@
+[15.154s] Invoking command in '/home/info/smartnav_ws/build/smartnav_core': PYTHONPATH=/home/info/smartnav_ws/build/smartnav_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/info/smartnav_ws/install/smartnav_core/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/info/smartnav_ws/build/smartnav_core/build --no-deps symlink_data
+[18.615s] running develop
+[20.707s] running egg_info
+[20.707s] creating smartnav_core.egg-info
+[20.870s] writing smartnav_core.egg-info/PKG-INFO
+[20.882s] writing dependency_links to smartnav_core.egg-info/dependency_links.txt
+[20.884s] writing entry points to smartnav_core.egg-info/entry_points.txt
+[20.884s] writing requirements to smartnav_core.egg-info/requires.txt
+[20.885s] writing top-level names to smartnav_core.egg-info/top_level.txt
+[20.886s] writing manifest file 'smartnav_core.egg-info/SOURCES.txt'
+[21.372s] reading manifest file 'smartnav_core.egg-info/SOURCES.txt'
+[21.385s] writing manifest file 'smartnav_core.egg-info/SOURCES.txt'
+[21.599s] running build_ext
+[21.600s] Creating /home/info/smartnav_ws/install/smartnav_core/lib/python3.12/site-packages/smartnav-core.egg-link (link to .)
+[21.612s] Installing battery_simulator script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.620s] Installing canne_feedback script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.620s] Installing cmd_vel_relay script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.621s] Installing crossing_monitor script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.622s] Installing metrics_recorder script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.623s] Installing obstacle_detector script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.624s] Installing patrol script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.629s] Installing rviz_alert_node script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.629s] Installing smartnav_navigator script to /home/info/smartnav_ws/install/smartnav_core/lib/smartnav_core
+[21.630s] 
+[21.630s] Installed /home/info/smartnav_ws/build/smartnav_core
+[21.631s] running symlink_data
+[21.631s] creating /home/info/smartnav_ws/install/smartnav_core/share/ament_index
+[21.631s] creating /home/info/smartnav_ws/install/smartnav_core/share/ament_index/resource_index
+[21.632s] creating /home/info/smartnav_ws/install/smartnav_core/share/ament_index/resource_index/packages
+[21.632s] symbolically linking /home/info/smartnav_ws/build/smartnav_core/resource/smartnav_core -> /home/info/smartnav_ws/install/smartnav_core/share/ament_index/resource_index/packages
+[21.632s] symbolically linking /home/info/smartnav_ws/build/smartnav_core/package.xml -> /home/info/smartnav_ws/install/smartnav_core/share/smartnav_core
+[21.633s] creating /home/info/smartnav_ws/install/smartnav_core/share/smartnav_core/launch
+[21.633s] symbolically linking /home/info/smartnav_ws/build/smartnav_core/launch/start_simulation.launch.py -> /home/info/smartnav_ws/install/smartnav_core/share/smartnav_core/launch
+[21.644s] creating /home/info/smartnav_ws/install/smartnav_core/share/smartnav_core/config
+[21.645s] symbolically linking /home/info/smartnav_ws/build/smartnav_core/config/smartnav_params.yaml -> /home/info/smartnav_ws/install/smartnav_core/share/smartnav_core/config
+[21.979s] Invoked command in '/home/info/smartnav_ws/build/smartnav_core' returned '0': PYTHONPATH=/home/info/smartnav_ws/build/smartnav_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/info/smartnav_ws/install/smartnav_core/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/info/smartnav_ws/build/smartnav_core/build --no-deps symlink_data

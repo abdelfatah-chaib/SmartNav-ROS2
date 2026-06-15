@@ -1,0 +1,33 @@
+[1.161s] Invoking command in '/home/info/smartnav_ws/build/smartnav_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/info/smartnav_ws/src/install/smartnav_core:/opt/ros/jazzy /usr/bin/cmake /home/info/smartnav_ws/src/smartnav_description -DCMAKE_INSTALL_PREFIX=/home/info/smartnav_ws/install/smartnav_description
+[2.019s] -- Found ament_cmake: 2.5.5 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[3.471s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[3.623s] -- Found ament_lint_auto: 0.17.4 (/opt/ros/jazzy/share/ament_lint_auto/cmake)
+[4.659s] -- Added test 'lint_cmake' to check CMake code style
+[4.673s] -- Added test 'xmllint' to check XML markup files
+[4.685s] -- Configuring done (2.7s)
+[4.807s] -- Generating done (0.1s)
+[4.824s] -- Build files have been written to: /home/info/smartnav_ws/build/smartnav_description
+[4.876s] Invoked command in '/home/info/smartnav_ws/build/smartnav_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/info/smartnav_ws/src/install/smartnav_core:/opt/ros/jazzy /usr/bin/cmake /home/info/smartnav_ws/src/smartnav_description -DCMAKE_INSTALL_PREFIX=/home/info/smartnav_ws/install/smartnav_description
+[4.878s] Invoking command in '/home/info/smartnav_ws/build/smartnav_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/info/smartnav_ws/src/install/smartnav_core:/opt/ros/jazzy /usr/bin/cmake --build /home/info/smartnav_ws/build/smartnav_description -- -j4 -l4
+[5.077s] Invoked command in '/home/info/smartnav_ws/build/smartnav_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/info/smartnav_ws/src/install/smartnav_core:/opt/ros/jazzy /usr/bin/cmake --build /home/info/smartnav_ws/build/smartnav_description -- -j4 -l4
+[5.081s] Invoking command in '/home/info/smartnav_ws/build/smartnav_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/info/smartnav_ws/src/install/smartnav_core:/opt/ros/jazzy /usr/bin/cmake --install /home/info/smartnav_ws/build/smartnav_description
+[5.119s] -- Install configuration: ""
+[5.120s] -- Execute custom install script
+[5.121s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/ament_index/resource_index/package_run_dependencies/smartnav_description
+[5.123s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/ament_index/resource_index/parent_prefix_path/smartnav_description
+[5.126s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/environment/ament_prefix_path.sh
+[5.134s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/environment/ament_prefix_path.dsv
+[5.135s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/environment/path.sh
+[5.136s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/environment/path.dsv
+[5.137s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/local_setup.bash
+[5.137s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/local_setup.sh
+[5.138s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/local_setup.zsh
+[5.145s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/local_setup.dsv
+[5.145s] -- Symlinking: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/package.dsv
+[5.178s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/ament_index/resource_index/packages/smartnav_description
+[5.180s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/cmake/smartnav_descriptionConfig.cmake
+[5.181s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/cmake/smartnav_descriptionConfig-version.cmake
+[5.182s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/package.xml
+[5.187s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/urdf/smartnav.xacro
+[5.187s] -- Up-to-date symlink: /home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/rviz/smartnav.rviz
+[5.262s] Invoked command in '/home/info/smartnav_ws/build/smartnav_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/info/smartnav_ws/src/install/smartnav_core:/opt/ros/jazzy /usr/bin/cmake --install /home/info/smartnav_ws/build/smartnav_description

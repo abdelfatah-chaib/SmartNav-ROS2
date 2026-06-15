@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: smartnav-core
+Version: 2.0.0
+Summary: SmartNav core package v2: obstacle detection, alert visualization, autonomous navigation, metrics recording and battery simulation for a smart white cane ROS2/Gazebo simulation.
+Maintainer: abdelfatah
+Maintainer-email: abdelfatahchaib@gmail.com
+License: MIT
+Provides-Extra: test

@@ -1,0 +1,40 @@
+# =============================================================================
+# SmartNav — Fichier de parametres centralise
+# Charge automatiquement par le launch file.
+# Modifier ici pour ajuster les seuils sans recompiler.
+# =============================================================================
+
+obstacle_detector:
+  ros__parameters:
+    # Angle du cone de detection frontale (degres)
+    front_cone_deg: 35.0
+    # Distance de danger (m) — alerte niveau 2
+    danger_threshold_m: 0.5
+    # Distance d'attention (m) — alerte niveau 1
+    warn_threshold_m: 1.2
+
+crossing_monitor_node:
+  ros__parameters:
+    # Rayon de danger voiture (m) — alerte niveau 2
+    danger_radius_m: 3.5
+    # Rayon d'attention voiture (m) — alerte niveau 1
+    warn_radius_m: 6.0
+
+canne_feedback_node:
+  ros__parameters:
+    # Activer/desactiver le son (false = muet, pratique en test)
+    audio_enabled: true
+
+battery_simulator_node:
+  ros__parameters:
+    # Niveau de batterie initial (%)
+    initial_level: 100.0
+    # Taux de decharge (% par minute)
+    drain_rate_per_min: 0.5
+    # Frequence de publication (Hz)
+    publish_hz: 1.0
+
+metrics_recorder_node:
+  ros__parameters:
+    # Repertoire de sauvegarde des CSV de metriques
+    output_dir: /tmp

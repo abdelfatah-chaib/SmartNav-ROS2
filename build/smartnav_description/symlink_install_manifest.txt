@@ -1,0 +1,17 @@
+/home/info/smartnav_ws/install/smartnav_description/share/ament_index/resource_index/package_run_dependencies/smartnav_description
+/home/info/smartnav_ws/install/smartnav_description/share/ament_index/resource_index/parent_prefix_path/smartnav_description
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/environment/ament_prefix_path.sh
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/environment/ament_prefix_path.dsv
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/environment/path.sh
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/environment/path.dsv
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/local_setup.bash
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/local_setup.sh
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/local_setup.zsh
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/local_setup.dsv
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/package.dsv
+/home/info/smartnav_ws/install/smartnav_description/share/ament_index/resource_index/packages/smartnav_description
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/cmake/smartnav_descriptionConfig.cmake
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/cmake/smartnav_descriptionConfig-version.cmake
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/package.xml
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/urdf/smartnav.xacro
+/home/info/smartnav_ws/install/smartnav_description/share/smartnav_description/rviz/smartnav.rviz

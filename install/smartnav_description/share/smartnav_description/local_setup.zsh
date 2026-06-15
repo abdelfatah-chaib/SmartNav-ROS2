@@ -1,0 +1,1 @@
+/home/info/smartnav_ws/build/smartnav_description/ament_cmake_environment_hooks/local_setup.zsh
